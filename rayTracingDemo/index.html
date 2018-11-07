@@ -14,64 +14,136 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <style type="text/css">
+        .my_output_bottom_left {
+            background-color: #c3c3c3;
+            bottom: 0px;
+        }
+    </style>
 </head>
 
 
 
 <body>
 
-<!--导航-->
-<header class="navbar fixed-top navbar-expand-sm bg-dark navbar-dark">
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link active" href="javascript:;" onclick="sendMessage('2')">开始程序</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-               aria-expanded="false">设置</a>
-            <div class="dropdown-menu">
-                <button class="dropdown-item" data-toggle="modal" data-target="#exampleModalCenter">选择区域地图</button>
-                <a class="dropdown-item" href="#">建筑设置</a>
-                <a class="dropdown-item" href="#">街景设置</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">亮度设置</a>
-                <a class="dropdown-item" href="#">鼠标灵敏度设置</a>
-                <a class="dropdown-item" href="#">锁定地图显示</a>
+    <!--导航-->
+    <header class="navbar fixed-top navbar-expand-sm bg-dark navbar-dark">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" href="javascript:;" onclick="sendMessage('2')">开始程序</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                    aria-expanded="false">设置</a>
+                <div class="dropdown-menu">
+                    <button class="dropdown-item" data-toggle="modal" data-target="#exampleModalCenter">选择区域地图</button>
+                    <a class="dropdown-item" href="#">建筑设置</a>
+                    <a class="dropdown-item" href="#">街景设置</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">亮度设置</a>
+                    <a class="dropdown-item" href="#">鼠标灵敏度设置</a>
+                    <a class="dropdown-item" href="#">锁定地图显示</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="btn btn-success" onclick="setTx()">set tx</button>
+
+                <button type="button" class="btn btn-secondary" onclick="setRx()">set rx</button>
+
+                <button type="button" class="btn btn-danger" onclick="reset()">reset</button>
+                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                    aria-controls="collapseExample">
+                    Link with href
+                </a>
+                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample01" role="button" aria-expanded="false"
+                    aria-controls="collapseExample01">
+                    Link with href
+                </a>
+
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">离开</a>
+            </li>
+        </ul>
+        <canvas id="locationCanvas" width="200" height="40" style="border:1px solid #c3c3c3;">
+            Your browser does not support the canvas element.
+        </canvas>
+
+
+    </header>
+
+
+    <!--显示界面-->
+    <div class="row">
+        <div class="col-md-12">
+
+            <div id="webgl" class="card card-success w-100 h-100" style="height:800px"></div>
+            <div class="collapse position-absolute" id="collapseExample" style="bottom:0px">
+                <div class="card card-body">
+                    <div style="height: 400px" class="card card-success">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="active">
+                                    <th>Car ID</th>
+                                    <th>RX</th>
+                                    <th>Coordinate</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-success">
+                                    <td><button type="button" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                            data-placement="bottom" title="点击可以更新车辆状态">
+                                            001
+                                        </button></td>
+                                    <td>True</td>
+                                    <td>(13.5,6.2)</td>
+                                    <td>A</td>
+                                </tr>
+                                <tr class="table-danger">
+                                    <td><button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                            data-placement="bottom" title="点击可以更新车辆状态">
+                                            002
+                                        </button></td>
+                                    <td>False</td>
+                                    <td>(14.5,7.5)</td>
+                                    <td>A</td>
+                                </tr>
+                                <tr class="table-danger">
+                                    <td><button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                            data-placement="bottom" title="点击可以更新车辆状态">
+                                            003
+                                        </button></td>
+                                    <td>False</td>
+                                    <td>(17.7,5.2)</td>
+                                    <td>A</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </li>
-        <li class="nav-item">
-            <button type="button" class="btn btn-success" onclick="setTx()">set tx</button>
-
-            <button type="button" class="btn btn-secondary" onclick="setRx()">set rx</button>
-
-            <button type="button" class="btn btn-danger" onclick="reset()">reset</button>
-
-
-        </li>
-
-
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">离开</a>
-        </li>
-    </ul>
-    <canvas id="locationCanvas" width="200" height="40" style="border:1px solid #c3c3c3;">
-        Your browser does not support the canvas element.
-    </canvas>
-
-
-</header>
-
-
-<!--显示界面-->
-<div class="row">
-    <div class="col-md-12">
-
-        <div id="webgl" class="card card-success" style="height:800px"></div>
+            <div class="collapse position-absolute" id="collapseExample01" style="bottom:0px;right: 0px;" >
+                <div class="card card-body">
+                    <!--数据展示部分 container-->
+                    <div class="container">
+                        <div class="card card-success">
+                            <div class="btn-group btn-group-sm">
+                                <button id="pathloss" type="button" class="btn btn-primary">路径损耗</button>
+                                <button id="powerdelay" type="button" class="btn btn-secondary">功率时延分布</button>
+                                <button id="meandelay" type="button" class="btn btn-success">平均附加时延</button>
+                                <button id="dimpowerdelay" type="button" class="btn btn-danger">功率时延空间分布</button>
+                            </div>
+                            <div id="main" style="width:600px;height:400px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
-
-</div>
 
 
 
@@ -81,7 +153,7 @@
 
 
     <!-- Modal 模态框-->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -110,7 +182,7 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 
 
 
@@ -126,60 +198,7 @@
     <script src="js/controls/TrackballControls.js"></script>
 
 
-    <!--数据展示部分 container-->
-    <div class="container">
-        <div class="card card-success">
-            <div class="btn-group btn-group-sm">
-                <button id="pathloss" type="button" class="btn btn-primary">路径损耗</button>
-                <button id="powerdelay" type="button" class="btn btn-secondary">功率时延分布</button>
-                <button id="meandelay" type="button" class="btn btn-success">平均附加时延</button>
-                <button id="dimpowerdelay" type="button" class="btn btn-danger">功率时延空间分布</button>
-            </div>
-            <div id="main" style="height:350px"></div>
-        </div>
 
-        <div style="height: 400px" class="card card-success">
-            <table class="table table-hover">
-                <thead>
-                    <tr class="active">
-                        <th>Car ID</th>
-                        <th>RX</th>
-                        <th>Coordinate</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="table-success">
-                        <td><button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="bottom"
-                                title="点击可以更新车辆状态">
-                                001
-                            </button></td>
-                        <td>True</td>
-                        <td>(13.5,6.2)</td>
-                        <td>A</td>
-                    </tr>
-                    <tr class="table-danger">
-                        <td><button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom"
-                                title="点击可以更新车辆状态">
-                                002
-                            </button></td>
-                        <td>False</td>
-                        <td>(14.5,7.5)</td>
-                        <td>A</td>
-                    </tr>
-                    <tr class="table-danger">
-                        <td><button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom"
-                                title="点击可以更新车辆状态">
-                                003
-                            </button></td>
-                        <td>False</td>
-                        <td>(17.7,5.2)</td>
-                        <td>A</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
     <script src="js/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
@@ -226,7 +245,7 @@
                     console.log("Message received :", evt.data);
                     if (sendCode == "1") {
                         readFromDataToArray(evt.data);
-                    }else if (sendCode == "2"){
+                    } else if (sendCode == "2") {
                         drawPath(evt.data);
                     }
                     //debug(evt.data);
@@ -459,7 +478,7 @@
         //loadXMLDoc();
 
         var mouse, raycaster, isShiftDown = false;
-        var rollOverMesh, rollOverMaterial,rollOverGeo;
+        var rollOverMesh, rollOverMaterial, rollOverGeo;
         var cubeMesh;
         var objects = [];
 
@@ -471,74 +490,74 @@
         loadPathLoss([1, 2, 3, 4, 5, 6], [-100, -101, -102, -103, -99, -98]);
 
 
-        function setTx(){
+        function setTx() {
 
 
-            orbitControls.enabled=false;
+            orbitControls.enabled = false;
             // roll-over helpers
-            rollOverGeo = new THREE.BoxBufferGeometry( 1, 0.5, 0.7 );
-            rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000, opacity: 0.5, transparent: true } );
-            rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
-            scene.add( rollOverMesh );
+            rollOverGeo = new THREE.BoxBufferGeometry(1, 0.5, 0.7);
+            rollOverMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0.5, transparent: true });
+            rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
+            scene.add(rollOverMesh);
 
             raycaster = new THREE.Raycaster();
             mouse = new THREE.Vector2();
-            document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-            document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-            document.addEventListener( 'keydown', onDocumentKeyDown, false );
-            document.addEventListener( 'keyup', onDocumentKeyUp, false );
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            document.addEventListener('mousedown', onDocumentMouseDown, false);
+            document.addEventListener('keydown', onDocumentKeyDown, false);
+            document.addEventListener('keyup', onDocumentKeyUp, false);
 
 
         }
 
 
         function reset() {
-            for (let i = 0; i < tx.length ; i++) {
+            for (let i = 0; i < tx.length; i++) {
                 scene.remove(tx[i]);
             }
-            for (let i = 0; i < rx.length ; i++) {
+            for (let i = 0; i < rx.length; i++) {
                 scene.remove(rx[i]);
             }
         }
-        
-        function  setRx() {
 
-            orbitControls.enabled=false;
+        function setRx() {
+
+            orbitControls.enabled = false;
             // roll-over helpers
-            rollOverGeo = new THREE.BoxBufferGeometry( 1, 0.5, 0.7 );
-            rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000, opacity: 0.5, transparent: true } );
-            rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
-            scene.add( rollOverMesh );
+            rollOverGeo = new THREE.BoxBufferGeometry(1, 0.5, 0.7);
+            rollOverMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0.5, transparent: true });
+            rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
+            scene.add(rollOverMesh);
 
             raycaster = new THREE.Raycaster();
             mouse = new THREE.Vector2();
-            document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-            document.addEventListener( 'mousedown', onDocumentMouseDown2, false );
-            
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            document.addEventListener('mousedown', onDocumentMouseDown2, false);
+
         }
 
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize( window.innerWidth , window.innerHeight);
+            renderer.setSize(window.innerWidth, window.innerHeight);
         }
         function drawPath(result) {
             var obj = JSON.parse(result);
             console.log(obj[0][0].x);
             console.log(obj[0][0].y);
 
-            for(var p in obj){
+            for (var p in obj) {
                 var list = obj[p];
                 var geometry = new THREE.Geometry();
-                var material = new THREE.LineBasicMaterial( { vertexColors: true } );
-                var color1 = new THREE.Color( 0x444444 ), color2 = new THREE.Color( 0xFF0000 );
+                var material = new THREE.LineBasicMaterial({ vertexColors: true });
+                var color1 = new THREE.Color(0x444444), color2 = new THREE.Color(0xFF0000);
                 for (var i = 0; i < list.length - 1; i++) {
                     var p1 = new THREE.Vector3(list[i].y, list[i].z, list[i].x);
                     var p2 = new THREE.Vector3(list[i + 1].y, list[i + 1].z, list[i + 1].x);
                     geometry.vertices.push(p1);
                     geometry.vertices.push(p2);
-                    geometry.colors.push( color1, color2 );
-                    var line = new THREE.Line( geometry, material, THREE.LineSegments );
+                    geometry.colors.push(color1, color2);
+                    var line = new THREE.Line(geometry, material, THREE.LineSegments);
                     scene.add(line);
                 }
 
@@ -557,11 +576,11 @@
             var pointY = [];
             var pointZ = [];
 
-            for(var p in obj){
+            for (var p in obj) {
                 var data = obj[p];
                 var pointXX = [];
                 var pointYY = [];
-                for (var i = 0; i < data.length; i++){
+                for (var i = 0; i < data.length; i++) {
                     pointXX.push(data[i].x);
                     pointYY.push(data[i].y);
                 }
@@ -667,13 +686,13 @@
                     }
                 });
                 object.scale.set(0.002, 0.002, 0.002);
-                object.position.copy( intersect.point );
+                object.position.copy(intersect.point);
                 object.rotateX(Math.PI * 6 / 4);
                 object.rotateZ(Math.PI * 6 / 4);
                 scene.add(object);
-                if (type == "tx"){
+                if (type == "tx") {
                     tx.push(object);
-                } else if (type == "rx"){
+                } else if (type == "rx") {
                     rx.push(object);
                 }
 
@@ -691,7 +710,7 @@
             scene = new THREE.Scene(); //创建一个新场景
             //添加一个透视相机
             camera = new THREE.PerspectiveCamera(30,
-                width /height, 1, 1000);
+                width / height, 1, 1000);
             camera.position.set(100, 300, 100); //设置相机位置
             camera.lookAt(new THREE.Vector3(0, 0, 0)); //让相机指向原点
             //渲染
@@ -723,19 +742,19 @@
             plane();
 
 
-            window.addEventListener( 'resize', onWindowResize, false );
-           // dragControlInit();
-           //  var gridHelper = new THREE.GridHelper( 50, 100 );
-           //  scene.add( gridHelper );
+            window.addEventListener('resize', onWindowResize, false);
+            // dragControlInit();
+            //  var gridHelper = new THREE.GridHelper( 50, 100 );
+            //  scene.add( gridHelper );
         }
 
 
         function plane() {
-            var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
-            geometry.rotateX( - Math.PI / 2 );
-            plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color:"#696969" ,visible: true } ) );
-            scene.add( plane );
-            objects.push( plane );
+            var geometry = new THREE.PlaneBufferGeometry(100, 100);
+            geometry.rotateX(- Math.PI / 2);
+            plane = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: "#696969", visible: true }));
+            scene.add(plane);
+            objects.push(plane);
         }
         //创建一个立方体
         function cube() {
@@ -779,66 +798,66 @@
         function path() {
             var path = new THREE.Path();
 
-            path.lineTo( 0, 0.8 );
-            path.quadraticCurveTo( 0, 1, 0.2, 1 );
-            path.lineTo( 1, 1 );
+            path.lineTo(0, 0.8);
+            path.quadraticCurveTo(0, 1, 0.2, 1);
+            path.lineTo(1, 1);
 
             var points = path.getPoints();
 
-            var geometry = new THREE.BufferGeometry().setFromPoints( points );
-            var material = new THREE.LineBasicMaterial( { color: 0xffffff } );
+            var geometry = new THREE.BufferGeometry().setFromPoints(points);
+            var material = new THREE.LineBasicMaterial({ color: 0xffffff });
 
-            var line = new THREE.Line( geometry, material );
-            scene.add( line );
+            var line = new THREE.Line(geometry, material);
+            scene.add(line);
         }
 
 
 
         //画线段
-        function line(){
+        function line() {
             var geometry = new THREE.Geometry();
-            var material = new THREE.LineBasicMaterial( { vertexColors: true } );
-            var color1 = new THREE.Color( 0x444444 ), color2 = new THREE.Color( 0xFF0000 );
+            var material = new THREE.LineBasicMaterial({ vertexColors: true });
+            var color1 = new THREE.Color(0x444444), color2 = new THREE.Color(0xFF0000);
 
             // 线的材质可以由2点的颜色决定
-            var p1 = new THREE.Vector3( -25, 2, -25 );
-            var p2 = new THREE.Vector3(  25, 2, -25 );
+            var p1 = new THREE.Vector3(-25, 2, -25);
+            var p2 = new THREE.Vector3(25, 2, -25);
             geometry.vertices.push(p1);
             geometry.vertices.push(p2);
-            geometry.colors.push( color1, color2 );
-            var line1 = new THREE.Line( geometry, material, THREE.LineSegments );
+            geometry.colors.push(color1, color2);
+            var line1 = new THREE.Line(geometry, material, THREE.LineSegments);
             scene.add(line1);
 
-             p1 = new THREE.Vector3( -25, 2, -25 );
-             p2 = new THREE.Vector3(  -25, 2, 25 );
+            p1 = new THREE.Vector3(-25, 2, -25);
+            p2 = new THREE.Vector3(-25, 2, 25);
             geometry.vertices.push(p1);
             geometry.vertices.push(p2);
-            geometry.colors.push( color1, color2 );
-            var line2 = new THREE.Line( geometry, material, THREE.LineSegments );
+            geometry.colors.push(color1, color2);
+            var line2 = new THREE.Line(geometry, material, THREE.LineSegments);
             scene.add(line2);
 
 
-             p1 = new THREE.Vector3( 25, 2, 25 );
-             p2 = new THREE.Vector3(  -25, 2, 25 );
+            p1 = new THREE.Vector3(25, 2, 25);
+            p2 = new THREE.Vector3(-25, 2, 25);
             geometry.vertices.push(p1);
             geometry.vertices.push(p2);
-            geometry.colors.push( color1, color2 );
-             line3 = new THREE.Line( geometry, material, THREE.LineSegments );
+            geometry.colors.push(color1, color2);
+            line3 = new THREE.Line(geometry, material, THREE.LineSegments);
             scene.add(line3);
 
-             p1 = new THREE.Vector3( 25, 2, 25 );
-             p2 = new THREE.Vector3(  25, 2, -25 );
+            p1 = new THREE.Vector3(25, 2, 25);
+            p2 = new THREE.Vector3(25, 2, -25);
             geometry.vertices.push(p1);
             geometry.vertices.push(p2);
-            geometry.colors.push( color1, color2 );
-            var line4 = new THREE.Line( geometry, material, THREE.LineSegments );
+            geometry.colors.push(color1, color2);
+            var line4 = new THREE.Line(geometry, material, THREE.LineSegments);
             scene.add(line4);
 
 
             scene.add(line);
         }
         // 创建建筑
-        function addMulGeometry( arrZ,arrX, height) {
+        function addMulGeometry(arrZ, arrX, height) {
             // var arrX=[4,0,0,2.5,4];
             // var arrZ=[4,4,0,-2,0];
             // var height=4;
@@ -1047,68 +1066,68 @@
         }
 
 
-        function onDocumentMouseMove( event ) {
+        function onDocumentMouseMove(event) {
             event.preventDefault();
-            mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
-            raycaster.setFromCamera( mouse, camera );
-            var intersects = raycaster.intersectObjects( objects );
+            mouse.set((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1);
+            raycaster.setFromCamera(mouse, camera);
+            var intersects = raycaster.intersectObjects(objects);
             var intersect;
-            if ( intersects.length > 0 ) {
-                intersect = intersects[ 0 ];
-                rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
+            if (intersects.length > 0) {
+                intersect = intersects[0];
+                rollOverMesh.position.copy(intersect.point).add(intersect.face.normal);
                 //rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
             }
             var canvas = document.getElementById("locationCanvas");
-            var cxt=canvas.getContext("2d");
-            cxt.font="15px Arial";
-            cxt.clearRect(0,0,200,40);
-            cxt.fillText(intersect.point.x,10,18);
-            cxt.fillText(intersect.point.z,10,33);
+            var cxt = canvas.getContext("2d");
+            cxt.font = "15px Arial";
+            cxt.clearRect(0, 0, 200, 40);
+            cxt.fillText(intersect.point.x, 10, 18);
+            cxt.fillText(intersect.point.z, 10, 33);
             //render();
         }
-        function onDocumentMouseDown( event ) {
+        function onDocumentMouseDown(event) {
             event.preventDefault();
-            mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
-            raycaster.setFromCamera( mouse, camera );
-            var intersects = raycaster.intersectObjects( objects );
-            if ( intersects.length > 0 ) {
-                var intersect = intersects[ 0 ];
-                load3DS(intersect,"tx");
+            mouse.set((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1);
+            raycaster.setFromCamera(mouse, camera);
+            var intersects = raycaster.intersectObjects(objects);
+            if (intersects.length > 0) {
+                var intersect = intersects[0];
+                load3DS(intersect, "tx");
                 scene.remove(rollOverMesh)
 
             }
 
             orbitControls.enabled = true;
-            document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
-            document.removeEventListener( 'mousedown', onDocumentMouseDown, false );
+            document.removeEventListener('mousemove', onDocumentMouseMove, false);
+            document.removeEventListener('mousedown', onDocumentMouseDown, false);
 
         }
 
-        function onDocumentMouseDown2( event ) {
+        function onDocumentMouseDown2(event) {
             event.preventDefault();
-            mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
-            raycaster.setFromCamera( mouse, camera );
-            var intersects = raycaster.intersectObjects( objects );
-            if ( intersects.length > 0 ) {
-                var intersect = intersects[ 0 ];
-                load3DS(intersect,"rx");
+            mouse.set((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1);
+            raycaster.setFromCamera(mouse, camera);
+            var intersects = raycaster.intersectObjects(objects);
+            if (intersects.length > 0) {
+                var intersect = intersects[0];
+                load3DS(intersect, "rx");
                 scene.remove(rollOverMesh)
             }
 
             orbitControls.enabled = true;
-            document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
-            document.removeEventListener( 'mousedown', onDocumentMouseDown2, false );
+            document.removeEventListener('mousemove', onDocumentMouseMove, false);
+            document.removeEventListener('mousedown', onDocumentMouseDown2, false);
 
         }
 
 
-        function onDocumentKeyDown( event ) {
-            switch ( event.keyCode ) {
+        function onDocumentKeyDown(event) {
+            switch (event.keyCode) {
                 case 16: isShiftDown = true; break;
             }
         }
-        function onDocumentKeyUp( event ) {
-            switch ( event.keyCode ) {
+        function onDocumentKeyUp(event) {
+            switch (event.keyCode) {
                 case 16: isShiftDown = false; break;
             }
         }
@@ -1122,6 +1141,7 @@
             requestAnimationFrame(render);
             renderer.render(scene, camera);
         }
+
     </script>
 
 </body>
