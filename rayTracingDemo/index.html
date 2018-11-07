@@ -38,7 +38,7 @@
                 <div class="dropdown-menu">
                     <button class="dropdown-item" data-toggle="modal" data-target="#exampleModalCenter">选择区域地图</button>
                     <a class="dropdown-item" href="#">建筑设置</a>
-                    <a class="dropdown-item" href="#">街景设置</a>
+                    <a class="dropdown-item"  href="javascript:;" onclick="sendMessage('3')">显示道路</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">亮度设置</a>
                     <a class="dropdown-item" href="#">鼠标灵敏度设置</a>
@@ -245,8 +245,13 @@
                     console.log("Message received :", evt.data);
                     if (sendCode == "1") {
                         readFromDataToArray(evt.data);
+                        sendMessage("cordinate");
                     } else if (sendCode == "2") {
                         drawPath(evt.data);
+                    }else if(sendCode == "3"){
+                        drawRoad(evt.data);
+                    }else if (sendCode == "cordinate"){
+                        processCordinate(evt.data);
                     }
                     //debug(evt.data);
                 };
@@ -483,7 +488,7 @@
         var objects = [];
 
         var tx = [], rx = [];
-
+        var xmax, xmin, ymax,ymin;
 
         main();
         render();
@@ -540,6 +545,39 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function processCordinate(result) {
+            var obj = JSON.parse(result);
+            xmax = obj.xmax;
+            xmin = obj.xmin;
+            ymax = obj.ymax;
+            ymin = obj.ymin;
+        }
+        function drawRoad(result){
+            var obj = JSON.parse(result);
+            console.log(obj[0][0].x);
+            console.log(obj[0][0].y);
+
+            for(var p in obj){
+                var list = obj[p];
+                var geometry = new THREE.Geometry();
+                var material = new THREE.LineBasicMaterial( { vertexColors: true } );
+                var color1 = new THREE.Color( 0x444444 ), color2 = new THREE.Color( 0xFF0000 );
+                for (var i = 0; i < list.length - 1; i++) {
+                    var p1 = new THREE.Vector3(list[i].y, 0, list[i].x);
+                    var p2 = new THREE.Vector3(list[i + 1].y, 0, list[i + 1].x);
+                    geometry.vertices.push(p1);
+                    geometry.vertices.push(p2);
+                    geometry.colors.push( color1, color2 );
+                    var line = new THREE.Line( geometry, material, THREE.LineSegments );
+                    scene.add(line);
+                }
+
+
+            }
+
+
         }
         function drawPath(result) {
             var obj = JSON.parse(result);
@@ -711,7 +749,7 @@
             //添加一个透视相机
             camera = new THREE.PerspectiveCamera(30,
                 width / height, 1, 1000);
-            camera.position.set(100, 300, 100); //设置相机位置
+            camera.position.set(-100, 300, -100); //设置相机位置
             camera.lookAt(new THREE.Vector3(0, 0, 0)); //让相机指向原点
             //渲染
             //antialias:true增加抗锯齿效果
@@ -751,7 +789,7 @@
 
         function plane() {
             var geometry = new THREE.PlaneBufferGeometry(100, 100);
-            geometry.rotateX(- Math.PI / 2);
+            geometry.rotateX(- Math.PI/2 );
             plane = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: "#696969", visible: true }));
             scene.add(plane);
             objects.push(plane);
@@ -1081,8 +1119,14 @@
             var cxt = canvas.getContext("2d");
             cxt.font = "15px Arial";
             cxt.clearRect(0, 0, 200, 40);
-            cxt.fillText(intersect.point.x, 10, 18);
-            cxt.fillText(intersect.point.z, 10, 33);
+            var x = intersect.point.z;
+            var y =  intersect.point.x;
+
+            var longitude = x/50*(xmax - xmin) + (xmax + xmin) / 2;
+            var latitude  = y/50*(xmax - xmin) + (ymax + ymin)  / 2;
+
+            cxt.fillText(longitude, 10, 18);
+            cxt.fillText(latitude, 10, 33);
             //render();
         }
         function onDocumentMouseDown(event) {
@@ -1094,7 +1138,7 @@
                 var intersect = intersects[0];
                 load3DS(intersect, "tx");
                 scene.remove(rollOverMesh)
-
+                
             }
 
             orbitControls.enabled = true;
