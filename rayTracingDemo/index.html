@@ -490,6 +490,8 @@
         var tx = [], rx = [];
         var xmax, xmin, ymax,ymin;
 
+        var TxDTO;
+        var RxDTO;
         main();
         render();
         loadPathLoss([1, 2, 3, 4, 5, 6], [-100, -101, -102, -103, -99, -98]);
@@ -590,8 +592,8 @@
                 var material = new THREE.LineBasicMaterial({ vertexColors: true });
                 var color1 = new THREE.Color(0x444444), color2 = new THREE.Color(0xFF0000);
                 for (var i = 0; i < list.length - 1; i++) {
-                    var p1 = new THREE.Vector3(list[i].y, list[i].z, list[i].x);
-                    var p2 = new THREE.Vector3(list[i + 1].y, list[i + 1].z, list[i + 1].x);
+                    var p1 = new THREE.Vector3(list[i].y, 0.5, list[i].x);
+                    var p2 = new THREE.Vector3(list[i + 1].y, 0.5, list[i + 1].x);
                     geometry.vertices.push(p1);
                     geometry.vertices.push(p2);
                     geometry.colors.push(color1, color2);
@@ -780,6 +782,8 @@
             plane();
 
 
+            var gridHelper = new THREE.GridHelper( 80, 30 );
+            scene.add( gridHelper );
             window.addEventListener('resize', onWindowResize, false);
             // dragControlInit();
             //  var gridHelper = new THREE.GridHelper( 50, 100 );
@@ -1122,8 +1126,8 @@
             var x = intersect.point.z;
             var y =  intersect.point.x;
 
-            var longitude = x/50*(xmax - xmin) + (xmax + xmin) / 2;
-            var latitude  = y/50*(xmax - xmin) + (ymax + ymin)  / 2;
+            var longitude = x/80*(xmax - xmin) + (xmax + xmin) / 2;
+            var latitude  = y/80*(xmax - xmin) + (ymax + ymin)  / 2;
 
             cxt.fillText(longitude, 10, 18);
             cxt.fillText(latitude, 10, 33);
@@ -1137,8 +1141,14 @@
             if (intersects.length > 0) {
                 var intersect = intersects[0];
                 load3DS(intersect, "tx");
-                scene.remove(rollOverMesh)
-                
+                scene.remove(rollOverMesh);
+                var x = intersect.point.z;
+                var y =  intersect.point.x;
+                var longitude = x/80*(xmax - xmin) + (xmax + xmin) / 2;
+                var latitude  = y/80*(xmax - xmin) + (ymax + ymin)  / 2;
+                TxDTO = { "type" : "tx","longitude" : longitude , "latitude" : latitude};
+                var str = JSON.stringify(TxDTO);
+                sendMessage(str);
             }
 
             orbitControls.enabled = true;
@@ -1155,7 +1165,14 @@
             if (intersects.length > 0) {
                 var intersect = intersects[0];
                 load3DS(intersect, "rx");
-                scene.remove(rollOverMesh)
+                scene.remove(rollOverMesh);
+                var x = intersect.point.z;
+                var y =  intersect.point.x;
+                var longitude = x/80*(xmax - xmin) + (xmax + xmin) / 2;
+                var latitude  = y/80*(xmax - xmin) + (ymax + ymin)  / 2;
+                RxDTO = { "type": "rx", "longitude" : longitude , "latitude" : latitude};
+                var str = JSON.stringify(RxDTO);
+                sendMessage(str);
             }
 
             orbitControls.enabled = true;
